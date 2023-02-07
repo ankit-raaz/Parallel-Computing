@@ -1,0 +1,150 @@
+#Multithreading
+
+import time 
+import threading
+
+def calc_square(numbers):
+	print("calculate of square numbers")
+	for n in numbers: 
+		time.sleep(0.2)
+		print('square:', n*n)
+
+def calc_cube(numbers):
+	print("calculate cube of numbers")
+	for n in numbers:
+		time.sleep(0.2)
+		print('cube:', n*n*n)
+		
+
+arr= [2,3,8,9]
+
+t=time.time()
+#Series 
+#calc_square(arr)
+#calc_cube(arr)
+
+#parallel
+t1=threading.Thread(target=calc_square, args=(arr,))
+t2=threading.Thread(target=calc_cube, args=(arr,))
+
+t1.start()
+t2.start()
+
+t1.join()
+t2.join()
+print("done in :" , time.time()-t)
+
+
+import multiprocessing 
+
+result =[]
+
+def calc_square (numbers) :
+	global result
+	for n in numbers:
+		result.append(n*n)
+	print('inside process' + str(result))
+	
+if __name__ == "__main__" :
+	numbers = [2,3,5]
+	p= multiprocessing.Process(target= calc_square, args= (numbers,))
+	
+	p.start()
+	p.join()
+	
+	print('outside process' + str(result))
+
+import time
+import multiprocessing
+
+def calc_square(numbers):
+	for n in numbers:
+		time.sleep(5)
+		print('square ' + str(n*n))
+
+def calc_cube(numbers):
+	for n in numbers:
+		time.sleep(5)
+		print('cube ' + str(n*n*n))
+
+if __name__ == "__main__":
+    arr = [2,3,8,9]
+    p1 = multiprocessing.Process(target=calc_square, args=(arr,))
+    p2 = multiprocessing.Process(target=calc_cube, args=(arr,))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    print("Done!")
+
+#Multiprocessing
+import time
+import multiprocessing
+
+square_result=[]
+
+def calc_square(numbers):
+	global square_result
+	for n in numbers: 
+		#time.sleep(5)
+		print('square ' + str(n*n))
+		square_result.append(n*n)
+		print('within a process: result ' + str(square_result))
+#def calc_cube(numbers):
+#	for n in numbers:
+#		time.sleep(5)
+#		print('cube ' + str(n*n*n))
+
+#if _name_== "__main__":
+
+if __name__ == "__main__":
+	arr= [2,3,8,9]
+	p1=multiprocessing.Process(target=calc_square, args=(arr,))
+	#p2=multiprocessing.Process(target=calc_cube, args=(arr,))
+
+	p1.start()
+	#p2.start()
+
+	p1.join()
+	#p2.join()
+	#print('result' + str(square_result))
+	print("Done!")
+
+#Multithreading
+import time 
+import threading
+
+def calc_square(numbers):
+	print("calculate of square numbers")
+	for n in numbers: 
+		time.sleep(1)
+		print('square:', n*n)
+
+def calc_cube(numbers):
+	print("calculate cube of numbers")
+	for n in numbers:
+		time.sleep(1)
+		print('cube:', n*n*n)
+		
+
+arr= [2,3,8,9]
+
+t=time.time()
+#Series 
+#calc_square(arr)
+#calc_cube(arr)
+
+#parallel
+t1=threading.Thread(target=calc_square, args=(arr,))
+t2=threading.Thread(target=calc_cube, args=(arr,))
+
+t1.start()
+t2.start()
+
+t1.join()
+t2.join()
+print("done in :" , time.time()-t)
+
