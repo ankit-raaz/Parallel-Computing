@@ -1,0 +1,42 @@
+library(ecospace)
+data("KWTraits")
+nchar<-18
+char.state<-c(2,7,3,3,2,2,5,5,2,5,2,2,5,2,5,5,3,3)
+
+char.type<-c("numeric", "ord.num", "numeric", "numeric", "numeric", "numeric",
+             "ord.num", "ord.num", "numeric", "ord.num", "numeric", "numeric", "ord.num",
+             "numeric", "ord.num", "numeric", "numeric", "numeric")
+
+char.names <- c("Reproduction", "Size", "Substrate composition", "Substrate
+consistency", "Supported", "Attached", "Mobility", "Absolute tier", "Absolute
+microhabitat", "Relative tier", "Relative microhabitat", "Absolute food
+microhabitat", "Absolute food tier", "Relative food microhabitat", "Relative
+food tier", "Feeding habit", "Diet", "Food condition")
+
+state.names <- c("SEXL", "ASEX", "BVOL", "BIOT", "LITH", "FLUD", "HARD", "SOFT",
+                 "INSB", "SPRT", "SSUP", "ATTD", "FRLV", "MOBL", "ABST", "AABS", "IABS", "RLST",
+                 "AREL", "IREL", "FAAB", "FIAB", "FAST", "FARL", "FIRL", "FRST", "AMBT", "FILT",
+                 "ATTF", "MASS", "RAPT", "AUTO", "MICR", "CARN", "INCP", "PART", "BULK")
+
+ecospace<- create_ecospace(nchar,char.state,char.type,char.names,
+                           state.names,constraint = 2,
+                           weight.file = KWTraits)
+
+
+library(doParallel)
+ncores<- detectCores()
+
+nreps <- 1:1000
+system.time(
+  {
+#Neutral Model -1 
+n.samples <- lapply(X = nreps, FUN = neutral, Sseed = 5, Smax = 100, ecospace)
+n.metrics <- lapply(X = nreps, FUN = calc_metrics, samples = n.samples,
+                  Model = "Neutral", Param = "NA")
+
+#'[I ran this code with Param="1" for tree.input.100 and Param="0.5" for tree.input.50]
+n.all <- rbind_listdf(n.metrics)
+library("beepr")
+beep(6)
+write.table(n.all, "Neutral.csv")
+})
